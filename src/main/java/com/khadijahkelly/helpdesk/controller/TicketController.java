@@ -1,6 +1,7 @@
 package com.khadijahkelly.helpdesk.controller;
 
 import com.khadijahkelly.helpdesk.HelpdeskApplication;
+import com.khadijahkelly.helpdesk.repository.TicketRepository;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,16 +17,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.web.bind.annotation.PathVariable;
 
+import org.springframework.web.bind.annotation.PutMapping;
+
 @RestController
 @RequestMapping("/api/tickets")
 public class TicketController {
 
+  private final TicketRepository ticketRepository;
   private final HelpdeskApplication helpdeskApplication;
   private final TicketService ticketService;
 
-  public TicketController(TicketService ticketService, HelpdeskApplication helpdeskApplication) {
+  public TicketController(TicketService ticketService, HelpdeskApplication helpdeskApplication, TicketRepository ticketRepository) {
     this.ticketService = ticketService;
     this.helpdeskApplication = helpdeskApplication;
+    this.ticketRepository = ticketRepository;
   }
   // List all tickets
   @GetMapping
@@ -45,4 +50,11 @@ public class TicketController {
     return ticketService.getTicketById(id);
   }
 
+  // Update a ticket
+  @PutMapping("/{id}")
+  public Ticket updateTicket(
+    @PathVariable Long id,
+    @RequestBody Ticket ticket) {
+      return ticketService.updateTicket(id, ticket);
+    }
 }

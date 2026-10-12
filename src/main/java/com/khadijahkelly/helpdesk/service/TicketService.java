@@ -27,4 +27,16 @@ public class TicketService {
     public Ticket getTicketById(Long id) {
         return ticketRepository.findById(id).orElseThrow(() -> new RuntimeException("Ticket not found with id: " + id));
     }
+
+    // Update a ticket
+    public Ticket updateTicket(Long id, Ticket updatedTicket) {
+        Ticket existingTicket = ticketRepository.findById(id).orElseThrow(() -> new RuntimeException("Ticket not found with id: " + id)
+        );
+        existingTicket.setTitle(updatedTicket.getTitle());
+        existingTicket.setDescription(updatedTicket.getDescription());
+        existingTicket.setStatus(updatedTicket.getStatus());
+        existingTicket.setPriority(updatedTicket.getPriority());
+
+        return ticketRepository.save(existingTicket);
+    }
 }
