@@ -26,9 +26,10 @@ public class TicketController {
   public List<Ticket> getTickets() {
     return ticketService.getAllTickets();
   }
-}
+
 // Create a new ticket
   @PostMapping
   public Ticket createTicket(@RequestBody Ticket ticket) {
     return ticketService.createTicket(ticket);
   }
+}
