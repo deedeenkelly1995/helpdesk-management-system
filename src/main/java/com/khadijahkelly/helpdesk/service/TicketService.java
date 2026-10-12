@@ -22,4 +22,9 @@ public class TicketService {
     public Ticket createTicket(Ticket ticket) {
         return ticketRepository.save(ticket);
     }
+
+    // Get a ticket by ID
+    public Ticket getTicketById(Long id) {
+        return ticketRepository.findById(id).orElseThrow(() -> new RuntimeException("Ticket not found with id: " + id));
+    }
 }
