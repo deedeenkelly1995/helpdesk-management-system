@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import org.springframework.web.bind.annotation.PutMapping;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
+
 @RestController
 @RequestMapping("/api/tickets")
 public class TicketController {
@@ -57,4 +59,12 @@ public class TicketController {
     @RequestBody Ticket ticket) {
       return ticketService.updateTicket(id, ticket);
     }
+
+    // Delete a ticket
+    @DeleteMapping("/{id}")
+    public void deleteTicket(@PathVariable Long id) {
+      ticketService.deleteTicket(id);
+    }
+
+    
 }

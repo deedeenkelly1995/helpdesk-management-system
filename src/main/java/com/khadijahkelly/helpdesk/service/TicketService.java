@@ -39,4 +39,12 @@ public class TicketService {
 
         return ticketRepository.save(existingTicket);
     }
+
+    // Delete a ticket
+    public void deleteTicket(Long id) {
+        Ticket existingTicket = ticketRepository.findById(id).orElseThrow(() ->
+            new RuntimeException("Ticket not found with id: " + id));
+            
+        ticketRepository.delete(existingTicket);
+    }
 }
