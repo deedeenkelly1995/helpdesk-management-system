@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Ticket {
@@ -12,9 +13,16 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Long id;
+    @NotBlank(message = "Title is required")
     private String title;
+
+    @NotBlank (message = "Description is required")
     private String description;
+
+    @NotBlank (message = "Status is required")
     private String status;
+
+    @NotBlank (message = "Priority is required")
     private String priority;
 
     public Ticket() {
@@ -63,4 +71,6 @@ public class Ticket {
     public void setPriority(String priority) {
         this.priority = priority;
     }
+
+
 }

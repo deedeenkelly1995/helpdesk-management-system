@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/tickets")
 public class TicketController {
@@ -42,7 +44,7 @@ public class TicketController {
 
 // Create a new ticket
   @PostMapping
-  public Ticket createTicket(@RequestBody Ticket ticket) {
+  public Ticket createTicket(@Valid @RequestBody Ticket ticket) {
     return ticketService.createTicket(ticket);
   }
 
@@ -56,7 +58,7 @@ public class TicketController {
   @PutMapping("/{id}")
   public Ticket updateTicket(
     @PathVariable Long id,
-    @RequestBody Ticket ticket) {
+    @Valid @RequestBody Ticket ticket) {
       return ticketService.updateTicket(id, ticket);
     }
 
