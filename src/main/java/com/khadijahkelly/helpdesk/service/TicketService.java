@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import com.khadijahkelly.helpdesk.model.Ticket;
 import com.khadijahkelly.helpdesk.repository.TicketRepository;
+import com.khadijahkelly.helpdesk.exception.TicketNotFoundException;
 
 @Service 
 
@@ -25,13 +26,14 @@ public class TicketService {
 
     // Get a ticket by ID
     public Ticket getTicketById(Long id) {
-        return ticketRepository.findById(id).orElseThrow(() -> new RuntimeException("Ticket not found with id: " + id));
+        return ticketRepository.findById(id).orElseThrow(() -> new TicketNotFoundException(id));
     }
 
     // Update a ticket
     public Ticket updateTicket(Long id, Ticket updatedTicket) {
-        Ticket existingTicket = ticketRepository.findById(id).orElseThrow(() -> new RuntimeException("Ticket not found with id: " + id)
-        );
+        Ticket existingTicket = ticketRepository.findById(id)
+            .orElseThrow(() -> new TicketNotFoundException(id));
+        
         existingTicket.setTitle(updatedTicket.getTitle());
         existingTicket.setDescription(updatedTicket.getDescription());
         existingTicket.setStatus(updatedTicket.getStatus());
@@ -42,9 +44,11 @@ public class TicketService {
 
     // Delete a ticket
     public void deleteTicket(Long id) {
-        Ticket existingTicket = ticketRepository.findById(id).orElseThrow(() ->
-            new RuntimeException("Ticket not found with id: " + id));
-            
-        ticketRepository.delete(existingTicket);
-    }
+    Ticket existingTicket = ticketRepository.findById(id)
+        .orElseThrow(() -> new TicketNotFoundException(id));
+
+    ticketRepository.delete(existingTicket);
+}
+
+    
 }

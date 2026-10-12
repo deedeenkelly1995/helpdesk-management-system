@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 
 public class GlobalExceptionHandler {
+  
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<Map<String, String>> handleValidationErrors(
     MethodArgumentNotValidException ex) {
@@ -21,5 +22,13 @@ public class GlobalExceptionHandler {
     
     return ResponseEntity.badRequest().body(errors);
   
+    }
+
+    @ExceptionHandler(TicketNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleTicketNotFound(TicketNotFoundException ex) {
+      Map<String, String> error = new HashMap<>();
+      error.put("message", ex.getMessage());
+
+      return ResponseEntity.status(404).body(error);
     }
 }
