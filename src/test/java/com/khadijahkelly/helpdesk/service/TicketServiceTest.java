@@ -3,7 +3,7 @@ package com.khadijahkelly.helpdesk.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-import static org.junit.jupiterr.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.khadijahkelly.helpdesk.model.Ticket;
 import com.khadijahkelly.helpdesk.repository.TicketRepository;
+import com.khadijahkelly.helpdesk.service.TicketService;
 import com.khadijahkelly.helpdesk.exception.TicketNotFoundException;
 
 /*JUnit = testing framework
@@ -99,6 +100,4 @@ public class TicketServiceTest {
     );
   }
 
-
-  
 }
