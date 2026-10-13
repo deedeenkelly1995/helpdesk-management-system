@@ -17,7 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.khadijahkelly.helpdesk.model.Ticket;
 import com.khadijahkelly.helpdesk.repository.TicketRepository;
-import com.khadijahkelly.helpdesk.service.TicketService;
+
 import com.khadijahkelly.helpdesk.exception.TicketNotFoundException;
 
 /*JUnit = testing framework
@@ -179,4 +179,35 @@ void shouldUpdateTicket() {
 
     verify(ticketRepository).delete(ticket);
   }
+
+  // Test method to throw ticket not found when ID doesn't exist during the update
+  @Test
+  void shouldThrowExceptionWhenUpdatingNonexistentTicket() {
+    Ticket updatedTicket = new Ticket(
+        null,
+        "Updated title",
+        "Updated description",
+        "IN_PROGRESS",
+        "HIGH"
+    );
+
+    when(ticketRepository.findById(999L))
+        .thenReturn(Optional.empty());
+
+    assertThrows(
+        TicketNotFoundException.class,
+        () -> ticketService.updateTicket(999L, updatedTicket)
+    );
+}
+  // Test method to throw ticket not found when ID doesn't exist when deleting a ticket
+  @Test
+  void shouldThrowExceptionWhenDeletingNonexistentTicket() {
+    when(ticketRepository.findById(999L))
+        .thenReturn(Optional.empty());
+
+    assertThrows(
+        TicketNotFoundException.class,
+        () -> ticketService.deleteTicket(999L)
+    );
+}
 }
