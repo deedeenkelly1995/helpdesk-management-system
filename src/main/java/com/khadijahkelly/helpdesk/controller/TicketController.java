@@ -1,7 +1,5 @@
 package com.khadijahkelly.helpdesk.controller;
 
-import com.khadijahkelly.helpdesk.HelpdeskApplication;
-import com.khadijahkelly.helpdesk.repository.TicketRepository;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,14 +25,10 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/tickets")
 public class TicketController {
 
-  private final TicketRepository ticketRepository;
-  private final HelpdeskApplication helpdeskApplication;
   private final TicketService ticketService;
 
-  public TicketController(TicketService ticketService, HelpdeskApplication helpdeskApplication, TicketRepository ticketRepository) {
+  public TicketController(TicketService ticketService) {
     this.ticketService = ticketService;
-    this.helpdeskApplication = helpdeskApplication;
-    this.ticketRepository = ticketRepository;
   }
   // List all tickets
   @GetMapping
