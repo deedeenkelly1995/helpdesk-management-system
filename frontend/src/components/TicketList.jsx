@@ -1,19 +1,23 @@
 import { useEffect, useState } from "react";
+import { getAllTickets } from "../services/ticketService";
 
 function TicketList() {
   const [tickets, setTickets] = useState([]);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/tickets")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch tickets");
-        }
-        return response.json();
-      })
-      .then((data) => setTickets(data))
-      .catch((err) => setError(err.message));
+    const fetchTickets = async () => {
+      try {
+        setError("");
+
+        const data = await getAllTickets();
+        setTickets(data);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    fetchTickets();
   }, []);
 
   return (
