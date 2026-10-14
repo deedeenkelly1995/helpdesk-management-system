@@ -21,8 +21,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 
 import jakarta.validation.Valid;
 
+import org.springframework.web.bind.annotation.CrossOrigin; // React to access API
+
 @RestController
 @RequestMapping("/api/tickets")
+@CrossOrigin(origins = "http://localhost:5173")
 public class TicketController {
 
   private final TicketService ticketService;
