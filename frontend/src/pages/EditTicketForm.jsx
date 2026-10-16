@@ -24,6 +24,9 @@ function EditTicketForm() {
   return (
     <div>
       <h2>Edit Ticket Form</h2>
+
+      {error && <p>{error}</p>}
+
       {ticket && (
         <div>
           {" "}

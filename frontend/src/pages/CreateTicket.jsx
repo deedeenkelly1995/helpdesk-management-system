@@ -1,4 +1,4 @@
-function CreateTicket(ticket) {
+function CreateTicket() {
   return (
     <div>
       <h2>Create Ticket</h2>
