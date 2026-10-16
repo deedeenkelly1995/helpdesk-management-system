@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAllTickets } from "../services/ticketService";
+import { Link } from "react-router-dom";
 
 function TicketList() {
   const [tickets, setTickets] = useState([]);
@@ -30,7 +31,9 @@ function TicketList() {
 
       {tickets.map((ticket) => (
         <div key={ticket.id}>
-          <h3>{ticket.title}</h3>
+          <Link to={`/tickets/${ticket.id}`}>
+            <h3>{ticket.title}</h3>
+          </Link>
           <p>{ticket.description}</p>
           <p>Status: {ticket.status}</p>
           <p>Priority: {ticket.priority}</p>
