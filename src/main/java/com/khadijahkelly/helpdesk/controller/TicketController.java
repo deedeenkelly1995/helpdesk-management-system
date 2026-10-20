@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 
 import jakarta.validation.Valid;
 
+import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.CrossOrigin; // React to access API
 
 @RestController
@@ -61,8 +63,9 @@ public class TicketController {
 
     // Delete a ticket
     @DeleteMapping("/{id}")
-    public void deleteTicket(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTicket(@PathVariable Long id) {
       ticketService.deleteTicket(id);
+      return ResponseEntity.noContent().build();
     }
 
     
