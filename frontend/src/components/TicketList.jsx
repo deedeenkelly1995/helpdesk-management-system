@@ -6,12 +6,26 @@ function TicketList() {
   const [tickets, setTickets] = useState([]);
   const [error, setError] = useState("");
 
+  //Loading
+  const [loading, setLoading] = useState(true);
+
   //Search
   const [searchTerm, setSearchTerm] = useState("");
 
   // Filters
   const [selectedStatus, setSelectedStatus] = useState("ALL");
   const [selectedPriority, setSelectedPriority] = useState("ALL");
+
+  const clearFilters = () => {
+    setSearchTerm("");
+    setSelectedStatus("ALL");
+    setSelectedPriority("ALL");
+  };
+
+  const hasActiveFilters =
+    searchTerm.trim() !== "" ||
+    selectedStatus !== "ALL" ||
+    selectedPriority !== "ALL";
 
   const filteredTickets = tickets.filter((ticket) => {
     const matchesSearch = ticket.title
@@ -36,6 +50,8 @@ function TicketList() {
         setTickets(data);
       } catch (err) {
         setError(err.message);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -47,7 +63,15 @@ function TicketList() {
       <h2>Helpdesk Tickets</h2>
 
       {error && <p>{error}</p>}
-      {filteredTickets.length === 0 && !error && <p>No tickets found.</p>}
+
+      {!loading && tickets.length === 0 && !error && <p>No tickets found.</p>}
+
+      {!loading &&
+        !error &&
+        tickets.length > 0 &&
+        filteredTickets.length === 0 && <p>No matching tickets found.</p>}
+
+      {loading && <p> Loading tickets...</p>}
 
       {/*Ticket Search*/}
       <label htmlFor="ticketSearch">Search Tickets:</label>
@@ -60,7 +84,6 @@ function TicketList() {
       />
 
       {/*Ticket Status Filter*/}
-      <label htmlFor="ticketFilter">Filter Tickets:</label>
       <label htmlFor="ticketStatusFilter">Filter by Status:</label>
       <select
         id="ticketStatusFilter"
@@ -85,17 +108,29 @@ function TicketList() {
         <option value="HIGH">HIGH</option>
       </select>
 
-      {filteredTickets.map((ticket) => (
-        <div key={ticket.id}>
-          <Link to={`/tickets/${ticket.id}`}>
-            <h3>{ticket.title}</h3>
-          </Link>
-          <p>{ticket.description}</p>
-          <p>Status: {ticket.status}</p>
-          <p>Priority: {ticket.priority}</p>
-          <hr />
-        </div>
-      ))}
+      <button type="button" onClick={clearFilters} disabled={!hasActiveFilters}>
+        Clear Filters
+      </button>
+
+      {!loading && !error && tickets.length > 0 && (
+        <p>
+          Showing {filteredTickets.length} of {tickets.length} tickets
+        </p>
+      )}
+
+      {!loading &&
+        !error &&
+        filteredTickets.map((ticket) => (
+          <div key={ticket.id}>
+            <Link to={`/tickets/${ticket.id}`}>
+              <h3>{ticket.title}</h3>
+            </Link>
+            <p>{ticket.description}</p>
+            <p>Status: {ticket.status}</p>
+            <p>Priority: {ticket.priority}</p>
+            <hr />
+          </div>
+        ))}
     </div>
   );
 }
