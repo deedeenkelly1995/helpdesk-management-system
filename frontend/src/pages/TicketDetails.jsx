@@ -6,10 +6,19 @@ function TicketDetails() {
   const { id } = useParams();
   const [ticket, setTicket] = useState(null);
   const [error, setError] = useState("");
+  const [deleteError, setDeleteError] = useState("");
   const navigate = useNavigate();
+
+  //Loading
+  const [loading, setLoading] = useState(true);
+
+  //Deleting
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     const fetchTicket = async () => {
+      setLoading(true);
+      setTicket(null);
       try {
         setError("");
 
@@ -17,6 +26,8 @@ function TicketDetails() {
         setTicket(data);
       } catch (err) {
         setError(err.message);
+      } finally {
+        setLoading(false);
       }
     };
     fetchTicket();
@@ -32,10 +43,16 @@ function TicketDetails() {
     }
 
     try {
+      setDeleting(true);
+      setDeleteError("");
+
       await deleteTicket(id);
       navigate("/tickets");
-    } catch (error) {
-      console.error("Failed to delete ticket:", error);
+    } catch (err) {
+      console.error("Failed to delete ticket:", err);
+      setDeleteError("Failed to delete ticket. Please try again.");
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -43,9 +60,13 @@ function TicketDetails() {
     <div>
       <h2>Ticket Details</h2>
 
+      {loading && <p>Loading ticket...</p>}
+
       {error && <p>{error}</p>}
 
-      {ticket && (
+      {deleteError && <p>{deleteError}</p>}
+
+      {!loading && !error && ticket && (
         <div>
           {" "}
           <h3>{ticket.id}</h3>
@@ -54,8 +75,17 @@ function TicketDetails() {
           <p>Status: {ticket.status}</p>
           <p>Priority: {ticket.priority}</p>
           <hr />
-          <button type="button" onClick={handleDelete}>
-            Delete Ticket
+          <button
+            type="button"
+            disabled={deleting}
+            onClick={() => {
+              navigate(`/tickets/${id}/edit`);
+            }}
+          >
+            Edit Ticket
+          </button>
+          <button type="button" disabled={deleting} onClick={handleDelete}>
+            {deleting ? "Deleting..." : " Delete Ticket"}
           </button>
         </div>
       )}
