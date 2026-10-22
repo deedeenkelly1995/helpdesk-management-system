@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getTicketById, updateTicket } from "../services/ticketService";
 import { useParams, useNavigate } from "react-router-dom";
 import TicketForm from "../components/TicketForm";
+import { validateTicket } from "../utils/ticketValidation";
 
 function EditTicket() {
   const { id } = useParams();
@@ -14,6 +15,7 @@ function EditTicket() {
   const [loading, setLoading] = useState(true);
   const [saveError, setSaveError] = useState("");
   const navigate = useNavigate();
+  const [validationErrors, setValidationErrors] = useState({});
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,6 +26,12 @@ function EditTicket() {
       status: ticketStatus,
       priority: ticketPriority,
     };
+
+    const errors = validateTicket(updatedTicket);
+    setValidationErrors(errors);
+    if (Object.keys(errors).length > 0) {
+      return;
+    }
 
     try {
       setIsSaving(true);
@@ -82,6 +90,7 @@ function EditTicket() {
             setTicketStatus={setTicketStatus}
             ticketPriority={ticketPriority}
             setTicketPriority={setTicketPriority}
+            validationErrors={validationErrors}
           />
 
           <button type="submit" disabled={isSaving}>
