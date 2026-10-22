@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createTicket } from "../services/ticketService";
 import TicketForm from "../components/TicketForm";
+import { validateTicket } from "../utils/ticketValidation";
 
 function CreateTicket() {
   const [ticketTitle, setTicketTitle] = useState("");
@@ -10,6 +11,7 @@ function CreateTicket() {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({});
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,6 +25,12 @@ function CreateTicket() {
       priority: ticketPriority,
     };
 
+    const errors = validateTicket(newTicket);
+    setValidationErrors(errors);
+    if (Object.keys(errors).length > 0) {
+      return;
+    }
+
     try {
       setIsSaving(true);
       await createTicket(newTicket);
@@ -33,6 +41,7 @@ function CreateTicket() {
       setTicketDescription("");
       setTicketStatus("");
       setTicketPriority("");
+      setValidationErrors({});
     } catch (error) {
       console.error("Failed to create ticket", error);
       setErrorMessage("Unable to create ticket. Please try again.");
@@ -58,6 +67,7 @@ function CreateTicket() {
           setTicketStatus={setTicketStatus}
           ticketPriority={ticketPriority}
           setTicketPriority={setTicketPriority}
+          validationErrors={validationErrors}
         />
 
         <button type="submit" disabled={isSaving}>
