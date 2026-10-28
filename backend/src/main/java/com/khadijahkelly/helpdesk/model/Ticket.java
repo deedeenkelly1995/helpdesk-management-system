@@ -6,6 +6,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+
 @Entity
 public class Ticket {
 
@@ -24,6 +27,14 @@ public class Ticket {
 
     @NotBlank (message = "Priority is required")
     private String priority;
+
+    @ManyToOne
+    @JoinColumn(name = "created_by")
+    private User createdBy;
+
+    @ManyToOne
+    @JoinColumn(name = "assigned_to")
+    private User assignedTo;
 
     public Ticket() {
     }
@@ -72,5 +83,20 @@ public class Ticket {
         this.priority = priority;
     }
 
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public User getAssignedTo() {
+        return assignedTo;
+    }
+
+    public void setAssignedTo(User assignedTo) {
+        this.assignedTo = assignedTo;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
 
 }
